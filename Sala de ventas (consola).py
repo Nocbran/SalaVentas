@@ -1,10 +1,18 @@
 class Identificadores():
-    def __init__(self,IdProductos,IdInventario,IdEmpleado,IdCliente,IdProveedor):
+    def __init__(self,IdProductos,IdCategoria,,IdCliente,IdProveedor,IdEmpleado,IdVentas,IdDetalleVenta,IdCompra,IdDetalleCompra):
         self.IdProductos = IdProductos
-        self.IdInventario = IdInventario
-        self.IdEmpleado = IdEmpleado
+        self.IdCategoria = IdCategoria
         self.IdCliente = IdCliente
         self.IdProveedor = IdProveedor
+        self.IdEmpleado = IdEmpleado
+        self.IdVentas = IdVentas
+        self.IdDetalleVenta = IdDetalleVenta
+        self.IdCompra = IdCompra
+        self.IdDetalleCompra = IdDetalleCompra
+
+
+
+
 
     def __str__(self):
         return f"[{self.IdProductos} {self.IdInventario} {self.IdEmpleado} {self.IdCliente} {self.IdProveedor} ]"
@@ -22,6 +30,7 @@ class producto():
         return f"[{self.nombre} {self.categoria} {self.precio_costo} {self.precio_venta} {self.stock}]"
 
 class Productos():
+    '''nombre,precio,IdCategoria'''
     pass
 class Categoria():
     pass
