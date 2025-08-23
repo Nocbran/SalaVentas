@@ -1,5 +1,5 @@
 class Identificadores():
-    def __init__(self,IdProductos,IdCategoria,,IdCliente,IdProveedor,IdEmpleado,IdVentas,IdDetalleVenta,IdCompra,IdDetalleCompra):
+    def __init__(self,IdProductos,IdCategoria,IdCliente,IdProveedor,IdEmpleado,IdVentas,IdDetalleVenta,IdCompra,IdDetalleCompra):
         self.IdProductos = IdProductos
         self.IdCategoria = IdCategoria
         self.IdCliente = IdCliente
@@ -10,43 +10,48 @@ class Identificadores():
         self.IdCompra = IdCompra
         self.IdDetalleCompra = IdDetalleCompra
 
-
-
-
-
     def __str__(self):
-        return f"[{self.IdProductos} {self.IdInventario} {self.IdEmpleado} {self.IdCliente} {self.IdProveedor} ]"
+        return (f"[{self.IdProductos} {self.IdCategoria} {self.IdCliente} "
+                f"{self.IdProveedor} {self.IdEmpleado} {self.IdVentas} "
+                f"{self.IdDetalleVenta} {self.IdCompra} {self.IdDetalleCompra}]")
 
 
 class producto():
-    def __init__(self,nombre,categoria,precio_costo,precio_venta,stock):
-        self.nombre = nombre
-        self.categoria = categoria
-        self.precio_costo = precio_costo
-        self.precio_venta = precio_venta
-        self.stock = stock
+    def __init__(self):
+        self.productos = {}
 
-    def __str__(self):
-        return f"[{self.nombre} {self.categoria} {self.precio_costo} {self.precio_venta} {self.stock}]"
 
-class Productos():
-    '''nombre,precio,IdCategoria'''
-    pass
+    def AgregarProductos(self,IdProducto,nombre,precio_costo,precio_venta,stock):
+        self.productos[IdProducto] = {
+            "nombre" : nombre,
+            "precio_costo" : precio_costo,
+            "precio_venta" : precio_venta,
+            "stock" : stock
+            }
+
 class Categoria():
+    '''IdCategoria,Nombre'''
     pass
 class Cliente():
+    '''NitCliente,Nombre,Direccion,Telefono,Correo'''
     pass
 class Proveedor():
+    '''NitProveedor,Nombre,Direccion,Telefono,Correo,Empresa'''
     pass
 class Empleado():
+    '''IdEmpleado,Nombre,Direccion,Telefono,Correo,Puesto'''
     pass
 class Ventas():
+    '''IdVenta,Fecha,IdEmpleado,IdCliente,Total'''
     pass
 class DetalleVenta():
+    '''IdDetalleVentas,IdVenta,CantidadmIdProducto,Subtotal,Stock'''
     pass
 class Compras():
+    '''IdCompra,FechaIngreso,IdEmpleado,IdProveedor,Total'''
     pass
 class DetalleCompra():
+    '''IDDetalleCompra,IdVenta,Cantidad,IdProducto,Subtotal,FechaCaducidad'''
     pass
 
 
