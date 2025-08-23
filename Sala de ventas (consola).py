@@ -23,11 +23,22 @@ class producto():
 
 class Productos():
     pass
-class Inventario():
-    pass
-class Empleado():
+class Categoria():
     pass
 class Cliente():
     pass
 class Proveedor():
     pass
+class Empleado():
+    pass
+class Ventas():
+    pass
+class DetalleVenta():
+    pass
+class Compras():
+    pass
+class DetalleCompra():
+    pass
+
+
+
