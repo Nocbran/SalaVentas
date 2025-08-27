@@ -17,6 +17,8 @@
 from faulthandler import cancel_dump_traceback_later
 
 
+
+
 class Categoria:
     def __init__(self, id_categoria, nombre):
         self.id_categoria = id_categoria
