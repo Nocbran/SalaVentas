@@ -1,3 +1,6 @@
+from sys import exec_prefix
+
+
 class Categoria():
     def __init__(self):
         self.Categoria = {}
@@ -29,6 +32,7 @@ class Categoria():
         self.GuardarCategorias()
         print(f"Categoria con ID {IdCategoria} agregado correctamente. ")
 
+categoria = Categoria()
 
 class producto():
     def __init__(self):
@@ -67,7 +71,7 @@ class producto():
         self.GuardarProductos()
         print(f"Producto con el ID {IdProducto} agregado correctamente")
 
-
+Producto = producto()
 
 class Clientes():
     def __init__(self):
@@ -120,20 +124,47 @@ class Clientes():
 
 clientes =  Clientes()
 
-
 class Proveedor():
     def __init__(self):
         self.proveedor = {}
+        self.CargarProveedores = ()
+    def CargarProveedores(self):
+        try:
+            with open("Proveedores.txt","r",encoding="utf-8") as archivo:
+                for linea in archivo:
+                    linea = linea.strip()
+                    if linea :
+                        NitProveedor,nombre,direccion,telefono,correo,empresa = linea.split(":")
+                        self.proveedor[NitProveedor] = {
+                            "nombre": nombre,
+                            "direccion": direccion,
+                            "telefono": telefono,
+                            "correo": correo,
+                            "empresa": empresa
+                        }
+            print("Proveedores importado desde Proveedores.txt")
+        except FileNotFoundError:
+            print("No existe el archivo Proveedores, se creara uno nuevo.")
 
-    def AgregarProveedor(self, nit, nombre, direccion, telefono, correo, empresa):
-        self.proveedor[nit] = {
+
+    def GuardarProveedor(self):
+        with open("Proveedores.txt","w",encoding="utf-8") as archivo:
+            for NitProveedor, datos in self.proveedor.items():
+                archivo.write(f"{NitProveedor}:{datos['nombre']}:{datos['direccion']}:{datos['telefono']}:{datos['correo']}:{datos['empresa']}\n")
+
+
+    def AgregarProveedor(self, NitProveedor, nombre, direccion, telefono, correo, empresa):
+        self.proveedor[NitProveedor] = {
             "nombre": nombre,
             "direccion": direccion,
             "telefono": telefono,
             "correo": correo,
             "empresa": empresa
         }
+        self.GuardarProveedor()
+        print(f"Proveedor con el Nit {NitProveedor} agregado correctamente.")
 
+proveedor = Proveedor()
 
 class Empleado():
     def __init__(self):
