@@ -1,18 +1,61 @@
 class Categoria():
-    def __init__(self,IdCategoria,nombre):
-        self.IdCategoria = IdCategoria
-        self.nombre = nombre
+    def __init__(self):
+        self.Categoria = {}
+        self.CargarCategoria()
+    def CargarCategoria(self):
+        try:
+            with open("Categorias.txt", "r", encoding="utf-8") as archivo:
+                for linea in archivo:
+                    linea = linea.strip()
+                    if linea :
+                        IdCategoria,nombre = linea.split(":")
+                        self.Categoria[IdCategoria] = {
+                            "nombre" : nombre
+                        }
+            print("Categorias importados desde Categorias.txt")
+        except FileNotFoundError:
+            print("No existe el archivo Categorias.txt, Se creara uno nuevo")
+
+    def GuardarCategorias(self):
+        with open("Categorias.txt","w", encoding="utf-8") as archivo:
+            for IdCategoria, datos in self.Categoria.items():
+                archivo.write(f"{IdCategoria}:{datos['nombre']}")
 
 
     def AgregarCategoria(self, IdCategoria, nombre):
         self.categoria[IdCategoria] = {
             "nombre": nombre
         }
+        self.GuardarCategorias()
+        print(f"Categoria con ID {IdCategoria} agregado correctamente. ")
 
 
 class producto():
     def __init__(self):
         self.productos = {}
+        self.CargarProductos = ()
+    def CargarProductos(self):
+        try:
+            with open("Productos.txt","r",encoding="utf-8") as archivo:
+                for liena in archivo:
+                    linea = liena.strip()
+                    if linea :
+                        IdProducto,nombre,precio_costo,precio_venta,stock = linea.split(":")
+                        self.productos[IdProducto] = {
+                            "nombre" : nombre,
+                            "precio_costo": precio_costo,
+                            "precio_venta": precio_venta,
+                            "stock": stock
+                        }
+            print("Productos importados desde Productos.txt")
+        except FileNotFoundError:
+            print("No existe el archivo Productos, se creara uno nuevo")
+
+    def GuardarProductos(self):
+        with open("Productos.txt","w", encoding="utf-8") as archivo:
+            for IdProducto, datos in self.productos.items():
+                archivo.write(f"{IdProducto}:{datos['nombre']}:{datos['precio_costo']}:{datos['precio_venta']}:{datos['stock']}\n")
+
 
     def AgregarProductos(self, IdProducto, nombre, precio_costo=0, precio_venta=0, stock=0):
         self.productos[IdProducto] = {
@@ -21,7 +64,8 @@ class producto():
             "precio_venta": precio_venta,
             "stock": stock
         }
-
+        self.GuardarProductos()
+        print(f"Producto con el ID {IdProducto} agregado correctamente")
 
 class Clientes():
     def __init__(self):
