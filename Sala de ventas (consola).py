@@ -1,97 +1,177 @@
-'''class Identificadores():
-    def __init__(self,IdProductos,IdCategoria,IdCliente,IdProveedor,IdEmpleado,IdVentas,IdDetalleVenta,IdCompra,IdDetalleCompra):
-        self.IdProductos = IdProductos
+class Categoria():
+    def __init__(self,IdCategoria,nombre):
         self.IdCategoria = IdCategoria
-        self.IdCliente = IdCliente
-        self.IdProveedor = IdProveedor
-        self.IdEmpleado = IdEmpleado
-        self.IdVentas = IdVentas
-        self.IdDetalleVenta = IdDetalleVenta
-        self.IdCompra = IdCompra
-        self.IdDetalleCompra = IdDetalleCompra
-
-    def __str__(self):
-        return (f"[{self.IdProductos} {self.IdCategoria} {self.IdCliente} "
-                f"{self.IdProveedor} {self.IdEmpleado} {self.IdVentas} "
-                f"{self.IdDetalleVenta} {self.IdCompra} {self.IdDetalleCompra}]")'''
-from faulthandler import cancel_dump_traceback_later
-
-
-
-
-class Categoria:
-    def __init__(self, id_categoria, nombre):
-        self.id_categoria = id_categoria
         self.nombre = nombre
 
 
-class Producto:
-    def __init__(self, id_producto, nombre, id_categoria, stock=0, precio_costo=0,precio_venta =0):
-        self.id_producto = id_producto
-        self.nombre = nombre
-        self.precio_costo = precio_costo
-        self.precio_venta = precio_venta
-        self.id_categoria = id_categoria
-        self.stock = stock
-        self.total_compras = 0
-        self.total_ventas = 0
+    def AgregarCategoria(self, IdCategoria, nombre):
+        self.categoria[IdCategoria] = {
+            "nombre": nombre
+        }
 
 
-class Cliente:
-    def __init__(self, nit, nombre, direccion, telefono,correo):
-        self.nit = nit
-        self.nombre = nombre
-        self.direccion = direccion
-        self.telefono = telefono
-        self.correo = correo
+class producto():
+    def __init__(self):
+        self.productos = {}
 
-class Empleado:
-    def __init__(self, id_empleado, nombre, puesto):
-        self.id_empleado = id_empleado
-        self.nombre = nombre
-        self.puesto = puesto
+    def AgregarProductos(self, IdProducto, nombre, precio_costo=0, precio_venta=0, stock=0):
+        self.productos[IdProducto] = {
+            "nombre": nombre,
+            "precio_costo": precio_costo,
+            "precio_venta": precio_venta,
+            "stock": stock
+        }
 
 
-class Venta:
-    def __init__(self, id_venta, fecha, nit_cliente, id_empleado):
-        self.id_venta = id_venta
-        self.fecha = fecha
-        self.nit_cliente = nit_cliente
-        self.id_empleado = id_empleado
-        self.detalles = {}  # {id_producto: (cantidad, subtotal)}
+class Clientes():
+    def __init__(self):
+        self.clientes = {}
+        self.CargarClientes()
 
-    def agregar_detalle(self, producto, cantidad):
-        if producto.stock >= cantidad:
-            subtotal = producto.precio * cantidad
-            self.detalles[producto.id_producto] = (cantidad, subtotal)
-            producto.stock -= cantidad
-            producto.total_ventas += cantidad
+    def CargarClientes(self):
+        try:
+            with open("Clientes.txt", "r", encoding="utf-8") as archivo:
+                for linea in archivo:
+                    linea=linea.strip()
+                    if linea:
+                        nit,nombre,direccion,telefono,correo = linea.split(":")
+                        self.clientes[nit] = {
+                            "nombre" : nombre,
+                            "direccion" : direccion,
+                            "telefono" : telefono,
+                            "correo" : correo
+                        }
+            print("Clientes importados desde clientes.txt")
+        except FileNotFoundError:
+            print("No existe el archivo Clientes.txt,se creara uno nuevo al guardar.")
+
+
+    def GuardarClientes(self):
+        with open("clientes.txt", "w", encoding="utf-8") as archivo:
+            for nit, datos in self,Clientes.items():
+                archivo.write(f"{nit};{datos['nombre']}:{datos['direccion']}:{datos['telefono']}:{datos['correo']}\n")
+
+
+    def AgregarCliente(self, nit, nombre, direccion, telefono, correo):
+        self.cliente[nit] = {
+            "nombre": nombre,
+            "direccion": direccion,
+            "telefono": telefono,
+            "correo": correo
+        }
+        self.GuardarClientes()
+        print(f"Cliente con NIT {nit} agregado correctamente.")
+
+    def MostrarTodos(self):
+        if self.clientes:
+            print("\nLista de clientes: ")
+            for nit,datos in self.clientes.items():
+                print(f"\nNit : {nit}")
+                for clave,valor in datos.items():
+                    print(f"{clave} : {valor}")
         else:
-            print("Stock insuficiente")
+            print("No hay clientes registrados.")
+
+clientes =  Clientes()
 
 
-class Compra:
-    def __init__(self, id_compra, fecha, nit_proveedor, id_empleado):
-        self.id_compra = id_compra
-        self.fecha = fecha
-        self.nit_proveedor = nit_proveedor
-        self.id_empleado = id_empleado
-        self.detalles = {}  # {id_producto: (cantidad, subtotal)}
+class Proveedor():
+    def __init__(self):
+        self.proveedor = {}
 
-    def agregar_detalle(self, producto, cantidad, precio_costo):
-        subtotal = precio_costo * cantidad
-        self.detalles[producto.id_producto] = (cantidad, subtotal)
-        producto.stock += cantidad
-        producto.total_compras += cantidad
+    def AgregarProveedor(self, Nit, nombre, direccion, telefono, correo, empresa):
+        self.proveedor[Nit] = {
+            "nombre": nombre,
+            "direccion": direccion,
+            "telefono": telefono,
+            "correo": correo,
+            "empresa": empresa
+        }
 
 
-productos = {}
-categorias = {}
-clientes = {}
-empleados = {}
-ventas = {}
-compras = {}
+class Empleado():
+    def __init__(self):
+        self.empleado = {}
 
+    def AgregarEmpleado(self, IdEmpleado, nombre, direccion, telefono, correo, puesto):
+        self.empleado[IdEmpleado] = {
+            "nombre": nombre,
+            "direccion": direccion,
+            "telefono": telefono,
+            "correo": correo,
+            "puesto": puesto
+        }
+
+
+'''---------------------------------------------------'''
+'''AgregarIdEmpleado,NitClientes'''
+
+
+class Ventas():
+    def __init__(self):
+        self.ventas = {}
+
+    def AgregarVentas(self, IdVenta, fecha, total):
+        self.ventas[IdVenta] = {
+            "fecha": fecha,
+            "total": total,
+        }
+
+
+'''--------------------------------------------------'''
+
+'''__________________________________________________'''
+'''AGREGAR IdVenta,IdProducto'''
+
+
+class DetalleVenta():
+    def __init__(self):
+        self.detalleventas = {}
+
+    def AgregarDetalleVenta(self, IdDetalleVenta, cantidad, subtotal, stock):
+        self.detalleventas[IdDetalleVenta] = {
+            "cantidad": cantidad,
+            "subtotal": subtotal,
+            "stock": stock
+        }
+
+
+'''_____________________________________________________________'''
+
+'''**************************************************'''
+'''AGREGAR IdEmpleado NitProveedores'''
+
+
+class Compras():
+    def __init__(self):
+        self.compras = {}
+
+    def AgregarCompras(self, IdCompra, fechaingreso, total):
+        self.compras[IdCompra] = {
+            "fechaingreso": fechaingreso,
+            "total": total
+        }
+
+
+'''*******************************************************'''
+
+'''/////////////////////////////////////////////////'''
+'''AGREGAR IdVenta,IdProducto'''
+
+
+class DetalleCompra():
+    def __init__(self):
+        self.detallecompra = {}
+
+    def AgregarDetalleCompra(self, IdDetalleCompra, cantidad, subtotal, fechacaducidad):
+        self.detallecompra[IdDetalleCompra] = {
+            "cantidad": cantidad,
+            "subtotal": subtotal,
+            "fechacaducidad": fechacaducidad
+        }
+
+
+'''////////////////////////////////////////////////////////////////////////'''
 
 while True:
     print("\n *****BIENVENIDO A LA SALA DE VENTAS*****")
@@ -104,6 +184,6 @@ while True:
     print("7. --Agregar detalles de ventas--")
     print("8. --Agregar compras--")
     print("9. --Agregar detalle de compras--")
-    print("10. Salir")
+    print("10. --Salir--")
 
 
