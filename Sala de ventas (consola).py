@@ -67,6 +67,8 @@ class producto():
         self.GuardarProductos()
         print(f"Producto con el ID {IdProducto} agregado correctamente")
 
+
+
 class Clientes():
     def __init__(self):
         self.clientes = {}
