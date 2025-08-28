@@ -48,12 +48,12 @@ class Clientes():
 
     def GuardarClientes(self):
         with open("clientes.txt", "w", encoding="utf-8") as archivo:
-            for nit, datos in self,Clientes.items():
+            for nit,datos in self.clientes.items():
                 archivo.write(f"{nit};{datos['nombre']}:{datos['direccion']}:{datos['telefono']}:{datos['correo']}\n")
 
 
     def AgregarCliente(self, nit, nombre, direccion, telefono, correo):
-        self.cliente[nit] = {
+        self.clientes[nit] = {
             "nombre": nombre,
             "direccion": direccion,
             "telefono": telefono,
@@ -79,8 +79,8 @@ class Proveedor():
     def __init__(self):
         self.proveedor = {}
 
-    def AgregarProveedor(self, Nit, nombre, direccion, telefono, correo, empresa):
-        self.proveedor[Nit] = {
+    def AgregarProveedor(self, nit, nombre, direccion, telefono, correo, empresa):
+        self.proveedor[nit] = {
             "nombre": nombre,
             "direccion": direccion,
             "telefono": telefono,
@@ -186,4 +186,15 @@ while True:
     print("9. --Agregar detalle de compras--")
     print("10. --Salir--")
 
+    opcion = input("Escoja una opcion: ")
 
+    if opcion == "3":
+        print("Por favor ingrese los siguientes datos solicitados")
+        nit = input("NIT: ")
+        nombre = input("Nombre: ")
+        direccion = input("Direccion: ")
+        telefono = input("Telefono: ")
+        correo = input("Correo: ")
+        clientes.AgregarCliente(nit,nombre,direccion,telefono,correo)
+    elif opcion == "2":
+        clientes.MostrarTodos()
