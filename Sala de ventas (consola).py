@@ -1,4 +1,5 @@
 from sys import exec_prefix
+from types import NotImplementedType
 
 
 class Categoria():
@@ -168,18 +169,42 @@ proveedor = Proveedor()
 
 class Empleado():
     def __init__(self):
-        self.empleado = {}
+        self.empleados = {}
+        self.CargarEmpleado=()
+    def CargarEmpleado(self):
+        try:
+            with open("Empleados.txt", "r" , encoding="utf-8") as archivo:
+                for linea in archivo:
+                    linea = linea.strip()
+                    if linea :
+                        NitEmpleado,nombre,direccion,telefono,correo,puesto = linea.split(":")
+                        self.empleados[NitEmpleado] = {
+                            "nombre": nombre,
+                            "direccion": direccion,
+                            "telefono": telefono,
+                            "correo": correo,
+                            "puesto": puesto
+                        }
+            print("Empleados importados desde Empleados.txt")
+        except FileNotFoundError:
+            print("No existe el archivo Empleados.txt, se creara uno nuevo.")
 
-    def AgregarEmpleado(self, IdEmpleado, nombre, direccion, telefono, correo, puesto):
-        self.empleado[IdEmpleado] = {
+    def GuardarEmpleados(self):
+        with open("Empleados.txt", "w" , encoding="utf-8") as archivo:
+            for NitEmpleado,datos in self.empleados.items():
+                archivo.write(f"{NitEmpleado}:{datos['nombre']}:{datos['direccion']}:{datos['telefono']}:{datos['correo']}:{datos['puesto']}")
+
+    def AgregarEmpleado(self, NitEmpleado, nombre, direccion, telefono, correo, puesto):
+        self.empleados[NitEmpleado] = {
             "nombre": nombre,
             "direccion": direccion,
             "telefono": telefono,
             "correo": correo,
             "puesto": puesto
         }
-
-
+        self.GuardarEmpleados()
+        print(f"Empleado con el NIT {NitEmpleado} agregado correctamente.")
+empleado = Empleado()
 '''---------------------------------------------------'''
 '''AgregarIdEmpleado,NitClientes'''
 
@@ -187,14 +212,36 @@ class Empleado():
 class Ventas():
     def __init__(self):
         self.ventas = {}
+        self.CargarVentas = ()
+    def CargarVentas(self):
+        try:
+            with open("Ventas.txt","r",encoding="utf-8") as archivo:
+                for linea in archivo:
+                    linea = linea.strip()
+                    if linea :
+                        Idventa,fecha,total = linea.split(":")
+                        self.ventas[Idventa] = {
+                            "fecha": fecha,
+                            "total": total,
+                        }
+            print("Ventas importados desde Ventas.txt")
+        except FileNotFoundError:
+            print("No existe el archivo Ventas.txt, se creara uno nuevo")
+
+    def GuardarVentas(self):
+        with open("Ventas.txt","r",encoding="utf-8") as archivo:
+            for IdVentas,datos in self.ventas.items():
+                archivo.write(f"{IdVentas}:{datos['fecha']}:{datos['total']}\n")
+
 
     def AgregarVentas(self, IdVenta, fecha, total):
         self.ventas[IdVenta] = {
             "fecha": fecha,
             "total": total,
         }
-
-
+        self.GuardarVentas()
+        print(f"Venta con el ID{IdVenta}, guardado correctamente.")
+ventas = Ventas()
 '''--------------------------------------------------'''
 
 '''__________________________________________________'''
