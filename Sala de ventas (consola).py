@@ -208,7 +208,6 @@ empleado = Empleado()
 '''---------------------------------------------------'''
 '''AgregarIdEmpleado,NitClientes'''
 
-
 class Ventas():
     def __init__(self):
         self.ventas = {}
@@ -247,7 +246,6 @@ ventas = Ventas()
 '''__________________________________________________'''
 '''AGREGAR IdVenta,IdProducto'''
 
-
 class DetalleVenta():
     def __init__(self):
         self.Detalleventas = {}
@@ -281,42 +279,84 @@ class DetalleVenta():
         }
         self.GuardarDetalleVenta()
         print("Detalle de venta agregado correctamente")
-
+detalleventa = DetalleVenta()
 '''_____________________________________________________________'''
 
 '''**************************************************'''
 '''AGREGAR IdEmpleado NitProveedores'''
 
-
 class Compras():
     def __init__(self):
-        self.compras = {}
+        self.Compras = {}
+        self.CargarCompras = ()
+    def CargarCompras(self):
+        try:
+            with open("Compras.txt","r",encoding="utf-8")as arvhivo:
+                for linea in arvhivo:
+                    linea=linea.strip()
+                    if linea :
+                        IdCompras,fechaingreso,total = linea.split(":")
+                        self.Compras[IdCompras] = {
+                            "fechaingreso": fechaingreso,
+                            "total": total
+                        }
+            print("Compras importadas desde Compras.txt")
+        except FileNotFoundError:
+            print("No existe el arvhivo Compras.txt, se creara uno nuevo.")
+
+    def GuardarCompras(self):
+        with open("Compras.txt","w",encoding="utf-8")as archivo:
+            for IdCompras,datos in self.Compras.items():
+                archivo.write(f"{IdCompras}:{datos['fechaingreso']}:{datos['total']}")
 
     def AgregarCompras(self, IdCompra, fechaingreso, total):
-        self.compras[IdCompra] = {
+        self.Compras[IdCompra] = {
             "fechaingreso": fechaingreso,
             "total": total
         }
-
-
+        self.GuardarCompras()
+        print("Compras guardadas correctamente.")
+compras = Compras()
 '''*******************************************************'''
 
 '''/////////////////////////////////////////////////'''
 '''AGREGAR IdVenta,IdProducto'''
 
-
 class DetalleCompra():
     def __init__(self):
-        self.detallecompra = {}
+        self.DetalleCompra = {}
+        self.CargarDetalleCompra = ()
+    def CargarDetalleCompra(self):
+        try:
+            with open("DetalleCompra.txt","r",encoding="utf")as archivo:
+                for linea in archivo:
+                    linea = linea.strip()
+                    if linea :
+                        IdDetalleCompra,cantidad,subtotal,fechacaducidad = linea.split(":")
+                        self.DetalleCompra[IdDetalleCompra] = {
+                            "cantidad": cantidad,
+                            "subtotal": subtotal,
+                            "fechacaducidad": fechacaducidad
+                        }
+            print("Detalles de compra guardadas correctamente")
+        except FileNotFoundError:
+            print("No existe DetalleCompra.txt, se creara uno nuevo")
+
+    def GuardarDetalleCompra(self):
+        with open("DetalleCompra.txt","w",encoding="utf-8")as archivo:
+            for IdDetalleCompra,datos in self.DetalleCompra.items():
+                archivo.write(f"{IdDetalleCompra}:{datos['cantidad']}:{datos['subtotal']}:{datos['fechacaducidad']}")
 
     def AgregarDetalleCompra(self, IdDetalleCompra, cantidad, subtotal, fechacaducidad):
-        self.detallecompra[IdDetalleCompra] = {
+        self.DetalleCompra[IdDetalleCompra] = {
             "cantidad": cantidad,
             "subtotal": subtotal,
             "fechacaducidad": fechacaducidad
         }
+        self.GuardarDetalleCompra()
+        print(f"Detalles de compra con el ID {IdDetalleCompra},agregado correctamente.")
 
-
+detallecompra = DetalleCompra()
 '''////////////////////////////////////////////////////////////////////////'''
 
 while True:
