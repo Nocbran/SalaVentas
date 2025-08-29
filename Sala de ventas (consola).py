@@ -250,15 +250,37 @@ ventas = Ventas()
 
 class DetalleVenta():
     def __init__(self):
-        self.detalleventas = {}
+        self.Detalleventas = {}
+        self.CargarDetalleVenta = ()
+    def CargarDetalleVenta(self):
+        try:
+            with open("Detalleventas.txt","r",encoding="utf-8") as archivo:
+                for linea in archivo:
+                    linea = linea.strip()
+                    if linea :
+                        IdDetalleVenta,cantidad,subtotal,stock = linea.split(":")
+                        self.Detalleventas[IdDetalleVenta] = {
+                            "cantidad": cantidad,
+                            "subtotal": subtotal,
+                            "stock": stock
+                        }
+            print("Detalleventas.txt importados desde Detalleventas")
+        except FileNotFoundError:
+            print("No existe el archivo Detalleventas.txt. se creara uno nuevo.")
+
+    def GuardarDetalleVenta(self):
+        with open("Detalleventas.txt","w",encoding="utf-8") as archivo:
+            for IdDetalleVenta,datos in self.Detalleventas.items():
+                archivo.write(f"{IdDetalleVenta}:{datos['cantidad']}:{datos['subtotal']}:{datos['stock']}")
 
     def AgregarDetalleVenta(self, IdDetalleVenta, cantidad, subtotal, stock):
-        self.detalleventas[IdDetalleVenta] = {
+        self.Detalleventas[IdDetalleVenta] = {
             "cantidad": cantidad,
             "subtotal": subtotal,
             "stock": stock
         }
-
+        self.GuardarDetalleVenta()
+        print("Detalle de venta agregado correctamente")
 
 '''_____________________________________________________________'''
 
