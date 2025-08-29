@@ -23,11 +23,11 @@ class Categoria():
     def GuardarCategorias(self):
         with open("Categorias.txt","w", encoding="utf-8") as archivo:
             for IdCategoria, datos in self.Categoria.items():
-                archivo.write(f"{IdCategoria}:{datos['nombre']}")
+                archivo.write(f"{IdCategoria}:{datos['nombre']}\n")
 
 
     def AgregarCategoria(self, IdCategoria, nombre):
-        self.categoria[IdCategoria] = {
+        self.Categoria[IdCategoria] = {
             "nombre": nombre
         }
         self.GuardarCategorias()
@@ -37,8 +37,8 @@ categoria = Categoria()
 
 class producto():
     def __init__(self):
-        self.productos = {}
-        self.CargarProductos = ()
+        self.Productos = {}
+        self.CargarProductos ()
     def CargarProductos(self):
         try:
             with open("Productos.txt","r",encoding="utf-8") as archivo:
@@ -46,7 +46,7 @@ class producto():
                     linea = liena.strip()
                     if linea :
                         IdProducto,nombre,precio_costo,precio_venta,stock = linea.split(":")
-                        self.productos[IdProducto] = {
+                        self.Productos[IdProducto] = {
                             "nombre" : nombre,
                             "precio_costo": precio_costo,
                             "precio_venta": precio_venta,
@@ -58,12 +58,12 @@ class producto():
 
     def GuardarProductos(self):
         with open("Productos.txt","w", encoding="utf-8") as archivo:
-            for IdProducto, datos in self.productos.items():
+            for IdProducto, datos in self.Productos.items():
                 archivo.write(f"{IdProducto}:{datos['nombre']}:{datos['precio_costo']}:{datos['precio_venta']}:{datos['stock']}\n")
 
 
     def AgregarProductos(self, IdProducto, nombre, precio_costo=0, precio_venta=0, stock=0):
-        self.productos[IdProducto] = {
+        self.Productos[IdProducto] = {
             "nombre": nombre,
             "precio_costo": precio_costo,
             "precio_venta": precio_venta,
@@ -98,12 +98,15 @@ class Clientes():
 
 
     def GuardarClientes(self):
-        with open("clientes.txt", "w", encoding="utf-8") as archivo:
+        with open("Clientes.txt", "w", encoding="utf-8") as archivo:
             for nit,datos in self.clientes.items():
-                archivo.write(f"{nit};{datos['nombre']}:{datos['direccion']}:{datos['telefono']}:{datos['correo']}\n")
+                archivo.write(f"{nit}:{datos['nombre']}:{datos['direccion']}:{datos['telefono']}:{datos['correo']}\n")
 
 
     def AgregarCliente(self, nit, nombre, direccion, telefono, correo):
+        if nit in self.clientes:
+            print("El cliente ya existe!")
+            return
         self.clientes[nit] = {
             "nombre": nombre,
             "direccion": direccion,
@@ -123,12 +126,12 @@ class Clientes():
         else:
             print("No hay clientes registrados.")
 
-clientes =  Clientes()
+clientes = Clientes()
 
 class Proveedor():
     def __init__(self):
         self.proveedor = {}
-        self.CargarProveedores = ()
+        self.CargarProveedores()
     def CargarProveedores(self):
         try:
             with open("Proveedores.txt","r",encoding="utf-8") as archivo:
@@ -170,7 +173,7 @@ proveedor = Proveedor()
 class Empleado():
     def __init__(self):
         self.empleados = {}
-        self.CargarEmpleado=()
+        self.CargarEmpleado()
     def CargarEmpleado(self):
         try:
             with open("Empleados.txt", "r" , encoding="utf-8") as archivo:
@@ -192,7 +195,7 @@ class Empleado():
     def GuardarEmpleados(self):
         with open("Empleados.txt", "w" , encoding="utf-8") as archivo:
             for NitEmpleado,datos in self.empleados.items():
-                archivo.write(f"{NitEmpleado}:{datos['nombre']}:{datos['direccion']}:{datos['telefono']}:{datos['correo']}:{datos['puesto']}")
+                archivo.write(f"{NitEmpleado}:{datos['nombre']}:{datos['direccion']}:{datos['telefono']}:{datos['correo']}:{datos['puesto']}\n")
 
     def AgregarEmpleado(self, NitEmpleado, nombre, direccion, telefono, correo, puesto):
         self.empleados[NitEmpleado] = {
@@ -211,7 +214,7 @@ empleado = Empleado()
 class Ventas():
     def __init__(self):
         self.ventas = {}
-        self.CargarVentas = ()
+        self.CargarVentas()
     def CargarVentas(self):
         try:
             with open("Ventas.txt","r",encoding="utf-8") as archivo:
@@ -228,7 +231,7 @@ class Ventas():
             print("No existe el archivo Ventas.txt, se creara uno nuevo")
 
     def GuardarVentas(self):
-        with open("Ventas.txt","r",encoding="utf-8") as archivo:
+        with open("Ventas.txt","w",encoding="utf-8") as archivo:
             for IdVentas,datos in self.ventas.items():
                 archivo.write(f"{IdVentas}:{datos['fecha']}:{datos['total']}\n")
 
@@ -249,7 +252,7 @@ ventas = Ventas()
 class DetalleVenta():
     def __init__(self):
         self.Detalleventas = {}
-        self.CargarDetalleVenta = ()
+        self.CargarDetalleVenta()
     def CargarDetalleVenta(self):
         try:
             with open("Detalleventas.txt","r",encoding="utf-8") as archivo:
@@ -269,7 +272,7 @@ class DetalleVenta():
     def GuardarDetalleVenta(self):
         with open("Detalleventas.txt","w",encoding="utf-8") as archivo:
             for IdDetalleVenta,datos in self.Detalleventas.items():
-                archivo.write(f"{IdDetalleVenta}:{datos['cantidad']}:{datos['subtotal']}:{datos['stock']}")
+                archivo.write(f"{IdDetalleVenta}:{datos['cantidad']}:{datos['subtotal']}:{datos['stock']}\n")
 
     def AgregarDetalleVenta(self, IdDetalleVenta, cantidad, subtotal, stock):
         self.Detalleventas[IdDetalleVenta] = {
@@ -288,7 +291,7 @@ detalleventa = DetalleVenta()
 class Compras():
     def __init__(self):
         self.Compras = {}
-        self.CargarCompras = ()
+        self.CargarCompras()
     def CargarCompras(self):
         try:
             with open("Compras.txt","r",encoding="utf-8")as arvhivo:
@@ -307,7 +310,7 @@ class Compras():
     def GuardarCompras(self):
         with open("Compras.txt","w",encoding="utf-8")as archivo:
             for IdCompras,datos in self.Compras.items():
-                archivo.write(f"{IdCompras}:{datos['fechaingreso']}:{datos['total']}")
+                archivo.write(f"{IdCompras}:{datos['fechaingreso']}:{datos['total']}\n")
 
     def AgregarCompras(self, IdCompra, fechaingreso, total):
         self.Compras[IdCompra] = {
@@ -325,10 +328,10 @@ compras = Compras()
 class DetalleCompra():
     def __init__(self):
         self.DetalleCompra = {}
-        self.CargarDetalleCompra = ()
+        self.CargarDetalleCompra()
     def CargarDetalleCompra(self):
         try:
-            with open("DetalleCompra.txt","r",encoding="utf")as archivo:
+            with open("DetalleCompra.txt","r",encoding="utf-8")as archivo:
                 for linea in archivo:
                     linea = linea.strip()
                     if linea :
@@ -345,7 +348,7 @@ class DetalleCompra():
     def GuardarDetalleCompra(self):
         with open("DetalleCompra.txt","w",encoding="utf-8")as archivo:
             for IdDetalleCompra,datos in self.DetalleCompra.items():
-                archivo.write(f"{IdDetalleCompra}:{datos['cantidad']}:{datos['subtotal']}:{datos['fechacaducidad']}")
+                archivo.write(f"{IdDetalleCompra}:{datos['cantidad']}:{datos['subtotal']}:{datos['fechacaducidad']}\n")
 
     def AgregarDetalleCompra(self, IdDetalleCompra, cantidad, subtotal, fechacaducidad):
         self.DetalleCompra[IdDetalleCompra] = {
@@ -359,28 +362,61 @@ class DetalleCompra():
 detallecompra = DetalleCompra()
 '''////////////////////////////////////////////////////////////////////////'''
 
-while True:
-    print("\n *****BIENVENIDO A LA SALA DE VENTAS*****")
-    print("1. --Agregar producto--")
-    print("2. --Agregar categoria--")
-    print("3. --Agregar clientes--")
-    print("4. --Agregar proveedores--")
-    print("5. --Agregar empleados--")
-    print("6. --Agregar ventas--")
-    print("7. --Agregar detalles de ventas--")
-    print("8. --Agregar compras--")
-    print("9. --Agregar detalle de compras--")
-    print("10. --Salir--")
+def menu():
+    while True:
+        print("\n *****BIENVENIDO A LA SALA DE VENTAS*****")
+        print("1. --Agregar producto--")
+        print("2. --Agregar categoria--")
+        print("3. --Agregar clientes--")
+        print("4. --Mostrar cliente--")
+        print("5. --Agregar proveedor--")
+        print("6. --Agregar empleado--")
+        print("7. --Salir--")
 
-    opcion = input("Escoja una opcion: ")
+        opcion = input("Escoja una opcion: ")
 
-    if opcion == "3":
-        print("Por favor ingrese los siguientes datos solicitados")
-        nit = input("NIT: ")
-        nombre = input("Nombre: ")
-        direccion = input("Direccion: ")
-        telefono = input("Telefono: ")
-        correo = input("Correo: ")
-        clientes.AgregarCliente(nit,nombre,direccion,telefono,correo)
-    elif opcion == "2":
-        clientes.MostrarTodos()
+        opciones = {
+            "1": lambda: Producto.AgregarProductos(
+                input("ID Producto: "),
+                input("Nombre: "),
+                input("Precio costo: "),
+                input("Precio_venta: "),
+                input("stock: "),
+            ),
+            "2": lambda: categoria.AgregarCategoria(
+                input("ID Categoria: "),
+                input("Nombre: "),
+            ),
+            "3": lambda : clientes.AgregarCliente(
+                input("Nit: "),
+                input("Nombre: "),
+                input("Direccion: "),
+                input("Telefono: "),
+                input("Correo: "),
+            ),
+            "4": lambda : clientes.MostrarTodos(),
+            "5" : lambda : proveedor.AgregarProveedor(
+                input("Nit Proveedor: "),
+                input("Nombre: "),
+                input("Direccion: "),
+                input("Telefono: "),
+                input("Correo: "),
+                input("Empresa: ")
+            ),
+            "6": lambda : empleado.AgregarEmpleado(
+                input("Nit Empleado: "),
+                input("Nombre: "),
+                input("Direccion: "),
+                input("Telefono: "),
+                input("Correo: "),
+                input("Puesto: "),
+            ),
+            "7": lambda : exit()
+
+        }
+        if opcion in opciones:
+            opciones[opcion]()
+        else:
+            print("Opcion invalida, intentelo de nuevo.")
+
+menu()
