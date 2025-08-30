@@ -1,6 +1,17 @@
 from sys import exec_prefix
 from types import NotImplementedType
 
+'''class AjustesVenta():
+    def __init__(self):
+        self.AjusteVenta = {}
+        self.Eliminar()
+        self.Actualizar()
+        
+    def Eliminar(self):
+        while True: '''
+
+
+
 
 class Categoria():
     def __init__(self):
@@ -32,6 +43,14 @@ class Categoria():
         }
         self.GuardarCategorias()
         print(f"Categoria con ID {IdCategoria} agregado correctamente. ")
+
+    def MostrarCategorias(self):
+        if self.Categoria:
+            print("\nLISTA DE CATEGORIAS: ")
+            for IdCategoria,datos in self.Categoria.items():
+                print(f"\nId Categoria: {IdCategoria}")
+                for clave,valor in datos.items():
+                    print(f"{clave} : {valor}")
 
 categoria = Categoria()
 
@@ -116,7 +135,7 @@ class Clientes():
         self.GuardarClientes()
         print(f"Cliente con NIT {nit} agregado correctamente.")
 
-    def MostrarTodos(self):
+    def MostrarClientes(self):
         if self.clientes:
             print("\nLista de clientes: ")
             for nit,datos in self.clientes.items():
@@ -394,7 +413,7 @@ def menu():
                 input("Telefono: "),
                 input("Correo: "),
             ),
-            "4": lambda : clientes.MostrarTodos(),
+            "4": lambda : clientes.MostrarClientes(),
             "5" : lambda : proveedor.AgregarProveedor(
                 input("Nit Proveedor: "),
                 input("Nombre: "),
