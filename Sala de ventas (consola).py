@@ -11,8 +11,6 @@ from types import NotImplementedType
         while True: '''
 
 
-
-
 class Categoria():
     def __init__(self):
         self.Categoria = {}
@@ -104,8 +102,8 @@ class Clientes():
                 for linea in archivo:
                     linea=linea.strip()
                     if linea:
-                        nit,nombre,direccion,telefono,correo = linea.split(":")
-                        self.clientes[nit] = {
+                        NitClientes,nombre,direccion,telefono,correo = linea.split(":")
+                        self.clientes[NitClientes] = {
                             "nombre" : nombre,
                             "direccion" : direccion,
                             "telefono" : telefono,
@@ -118,28 +116,28 @@ class Clientes():
 
     def GuardarClientes(self):
         with open("Clientes.txt", "w", encoding="utf-8") as archivo:
-            for nit,datos in self.clientes.items():
-                archivo.write(f"{nit}:{datos['nombre']}:{datos['direccion']}:{datos['telefono']}:{datos['correo']}\n")
+            for NitClientes,datos in self.clientes.items():
+                archivo.write(f"{NitClientes}:{datos['nombre']}:{datos['direccion']}:{datos['telefono']}:{datos['correo']}\n")
 
 
-    def AgregarCliente(self, nit, nombre, direccion, telefono, correo):
-        if nit in self.clientes:
+    def AgregarCliente(self,NitClientes, nombre, direccion, telefono, correo):
+        if NitClientes in self.clientes:
             print("El cliente ya existe!")
             return
-        self.clientes[nit] = {
+        self.clientes[NitClientes] = {
             "nombre": nombre,
             "direccion": direccion,
             "telefono": telefono,
             "correo": correo
         }
         self.GuardarClientes()
-        print(f"Cliente con NIT {nit} agregado correctamente.")
+        print(f"Cliente con NIT {NitClientes} agregado correctamente.")
 
     def MostrarClientes(self):
         if self.clientes:
             print("\nLista de clientes: ")
-            for nit,datos in self.clientes.items():
-                print(f"\nNit : {nit}")
+            for NitClientes,datos in self.clientes.items():
+                print(f"\nNit : {NitClientes}")
                 for clave,valor in datos.items():
                     print(f"{clave} : {valor}")
         else:
@@ -240,10 +238,12 @@ class Ventas():
                 for linea in archivo:
                     linea = linea.strip()
                     if linea :
-                        Idventa,fecha,total = linea.split(":")
+                        Idventa,fecha,NitClientes,NitEmpleado,total = linea.split(":")
                         self.ventas[Idventa] = {
                             "fecha": fecha,
-                            "total": total,
+                            "nit_cliente": NitClientes,
+                            "nit_empleado": NitEmpleado,
+                            "total": total
                         }
             print("Ventas importados desde Ventas.txt")
         except FileNotFoundError:
@@ -251,17 +251,26 @@ class Ventas():
 
     def GuardarVentas(self):
         with open("Ventas.txt","w",encoding="utf-8") as archivo:
-            for IdVentas,datos in self.ventas.items():
-                archivo.write(f"{IdVentas}:{datos['fecha']}:{datos['total']}\n")
+            for IdVenta,datos in self.ventas.items():
+                archivo.write(f"{IdVenta}:{datos['fecha']}:{datos['nit_cliente']}:{datos['nit_empleado']}:{datos['total']}\n")
 
+    def AgregarVentas(self, IdVenta, fecha, NitClientes, NitEmpleado, total):
+        if NitClientes not in clientes.clientes:
+            print(f" El cliente con NIT {NitClientes} no existe.")
+            return
 
-    def AgregarVentas(self, IdVenta, fecha, total):
+        if NitEmpleado not in empleado.empleados:
+            print(f"El empleado con NIT {NitEmpleado} no existe.")
+            return
+
         self.ventas[IdVenta] = {
             "fecha": fecha,
-            "total": total,
+            "nit_cliente": NitClientes,
+            "nit_empleado": NitEmpleado,
+            "total": total
         }
         self.GuardarVentas()
-        print(f"Venta con el ID{IdVenta}, guardado correctamente.")
+        print(f"✅ Venta con el ID {IdVenta}, guardada correctamente.")
 ventas = Ventas()
 '''--------------------------------------------------'''
 
@@ -384,37 +393,47 @@ detallecompra = DetalleCompra()
 def menu():
     while True:
         print("\n *****BIENVENIDO A LA SALA DE VENTAS*****")
-        print("1. --Agregar producto--")
-        print("2. --Agregar categoria--")
-        print("3. --Agregar clientes--")
-        print("4. --Mostrar cliente--")
-        print("5. --Agregar proveedor--")
-        print("6. --Agregar empleado--")
-        print("7. --Salir--")
+        print("1. --Ventas--")
+        print("2. --Agregar producto--")
+        print("3. --Agregar categoria--")
+        print("4. --Agregar clientes--")
+        print("5. --Mostrar cliente--")
+        print("6. --Agregar proveedor--")
+        print("7. --Agregar empleado--")
+        print("8. --Salir--")
 
         opcion = input("Escoja una opcion: ")
 
         opciones = {
-            "1": lambda: Producto.AgregarProductos(
+            "1": lambda : ventas.AgregarVentas(
+                input("Igrese el Id de ventas: "),
+                input("Ingrese la fecha: "),
+                input("Ingrese el ID del empleado: "),
+                input("Ingrese el Nit del cliente: "),
+                input("Ingrese el total: "),
+            ),
+
+
+            "2": lambda: Producto.AgregarProductos(
                 input("ID Producto: "),
                 input("Nombre: "),
                 input("Precio costo: "),
                 input("Precio_venta: "),
                 input("stock: "),
             ),
-            "2": lambda: categoria.AgregarCategoria(
+            "3": lambda: categoria.AgregarCategoria(
                 input("ID Categoria: "),
                 input("Nombre: "),
             ),
-            "3": lambda : clientes.AgregarCliente(
+            "4": lambda : clientes.AgregarCliente(
                 input("Nit: "),
                 input("Nombre: "),
                 input("Direccion: "),
                 input("Telefono: "),
                 input("Correo: "),
             ),
-            "4": lambda : clientes.MostrarClientes(),
-            "5" : lambda : proveedor.AgregarProveedor(
+            "5": lambda : clientes.MostrarClientes(),
+            "6" : lambda : proveedor.AgregarProveedor(
                 input("Nit Proveedor: "),
                 input("Nombre: "),
                 input("Direccion: "),
@@ -422,7 +441,7 @@ def menu():
                 input("Correo: "),
                 input("Empresa: ")
             ),
-            "6": lambda : empleado.AgregarEmpleado(
+            "7": lambda : empleado.AgregarEmpleado(
                 input("Nit Empleado: "),
                 input("Nombre: "),
                 input("Direccion: "),
@@ -430,7 +449,7 @@ def menu():
                 input("Correo: "),
                 input("Puesto: "),
             ),
-            "7": lambda : exit()
+            "8": lambda : exit()
 
         }
         if opcion in opciones:
