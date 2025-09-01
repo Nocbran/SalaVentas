@@ -89,6 +89,16 @@ class producto():
         self.GuardarProductos()
         print(f"Producto con el ID {IdProducto} agregado correctamente")
 
+    def MostrarProductos(self):
+        if self.Productos:
+            print("\n****LISTA DE PRODUCTOS****")
+            for IdProductos,datos in self.Productos.items():
+                print(f"\n ID productos: {IdProductos}")
+                for clave,valor in datos.items():
+                    print(f"{clave},{valor}")
+        else:
+            print("No hay productos registrados.")
+
 Producto = producto()
 
 class Clientes():
@@ -184,6 +194,15 @@ class Proveedor():
         }
         self.GuardarProveedor()
         print(f"Proveedor con el Nit {NitProveedor} agregado correctamente.")
+    def MostrarProveedor(self):
+        if self.proveedor:
+            print("\n****LISTA DE PROVEEDORES****")
+            for NitProveedor,datos in self.proveedor.items():
+                print(f"Nit del proveedor: {NitProveedor}")
+                for clave,valor in datos.items():
+                    print(f"{clave}:{valor}")
+        else:
+            print("No hay Proveedores registrados.")
 
 proveedor = Proveedor()
 
@@ -224,6 +243,16 @@ class Empleado():
         }
         self.GuardarEmpleados()
         print(f"Empleado con el NIT {NitEmpleado} agregado correctamente.")
+
+    def MostrarEmpleados(self):
+        if self.empleados:
+            print("\n***LISTA DE EMPLEADOS***")
+            for NitEmpleado,datos in self.empleados.items():
+                print(f"\nNit: {NitEmpleado}")
+                for clave,valor in datos.items():
+                    print(f"{clave}: {valor}")
+        else:
+            print("No hay empleados registrados")
 empleado = Empleado()
 '''---------------------------------------------------'''
 '''AgregarIdEmpleado,NitClientes'''
@@ -271,6 +300,16 @@ class Ventas():
         }
         self.GuardarVentas()
         print(f"Venta con el ID {IdVenta}, guardada correctamente.")
+
+    def MostrarVentas(self):
+        if self.ventas:
+            print("\n****LISTA DE VENTAS****")
+            for IdVentas,datos in self.ventas.items():
+                print(f"Id ventas: {IdVentas}")
+                for clave,valor in datos.items():
+                    print(f"{clave}:{valor}")
+        else:
+            print("No hay ventas registradas.")
 ventas = Ventas()
 '''--------------------------------------------------'''
 
@@ -416,14 +455,14 @@ detallecompra = DetalleCompra()
 def menu():
     while True:
         print("\n *****BIENVENIDO A LA SALA DE VENTAS*****")
-        print("1. --Ventas--")
-        print("2. --Agregar producto--")
-        print("3. --Agregar categoria--")
-        print("4. --Agregar clientes--")
-        print("5. --Mostrar cliente--")
-        print("6. --Agregar proveedor--")
-        print("7. --Agregar empleado--")
-        print("8. --Salir--")
+
+        print(f"{'1. Ventas'.ljust(25)} 2. Mostrar ventas")
+        print(f"{'3. Agregar productos'.ljust(25)} 4. Mostrar productos")
+        print(f"{'5. Agregar categoria'.ljust(25)} 6. Mostrar categorias")
+        print(f"{'7. Agregar clientes'.ljust(25)} 8. Mostrar clientes")
+        print(f"{'9. Agregar proveedor'.ljust(25)} 10. Mostrar proveedores")
+        print(f"{'11. Agregar empleado'.ljust(25)} 12. Mostrar empleados")
+        print(f"13. Salir")
 
         opcion = input("Escoja una opcion: ")
 
@@ -435,12 +474,8 @@ def menu():
                 input("Ingrese el Nit del cliente: "),
                 input("Ingrese el total: "),
             ),
-            "2" : lambda : detalleventa.AgregarDetalleVenta(
-                input("Ingrese el ID de detalle: "),
-                input("Ingrese el ID de venta: "),
-                input("Ingrese el ID del producto: "),
-                int(input("Ingrese la cantidad: "))
-            ),
+            "2": lambda : ventas.MostrarVentas(),
+
 
             "3": lambda: Producto.AgregarProductos(
                 input("ID Producto: "),
@@ -449,19 +484,27 @@ def menu():
                 input("Precio_venta: "),
                 input("stock: "),
             ),
-            "4": lambda: categoria.AgregarCategoria(
+            "4" : lambda : Producto.MostrarProductos(),
+
+
+            "5": lambda: categoria.AgregarCategoria(
                 input("ID Categoria: "),
                 input("Nombre: "),
             ),
-            "5": lambda : clientes.AgregarCliente(
+            "6" : lambda : categoria.MostrarCategorias(),
+
+
+            "7": lambda: clientes.AgregarCliente(
                 input("Nit: "),
                 input("Nombre: "),
                 input("Direccion: "),
                 input("Telefono: "),
                 input("Correo: "),
             ),
-            "6": lambda : clientes.MostrarClientes(),
-            "7" : lambda : proveedor.AgregarProveedor(
+            "8": lambda: clientes.MostrarClientes(),
+
+
+            "9": lambda: proveedor.AgregarProveedor(
                 input("Nit Proveedor: "),
                 input("Nombre: "),
                 input("Direccion: "),
@@ -469,7 +512,9 @@ def menu():
                 input("Correo: "),
                 input("Empresa: ")
             ),
-            "8": lambda : empleado.AgregarEmpleado(
+            "10" : lambda : proveedor.MostrarProveedor(),
+
+            "11": lambda: empleado.AgregarEmpleado(
                 input("Nit Empleado: "),
                 input("Nombre: "),
                 input("Direccion: "),
@@ -477,7 +522,9 @@ def menu():
                 input("Correo: "),
                 input("Puesto: "),
             ),
-            "9": lambda : exit()
+            "12" : lambda : empleado.MostrarEmpleados(),
+
+            "13": lambda : exit()
 
         }
         if opcion in opciones:
