@@ -10,7 +10,6 @@ from types import NotImplementedType
     def Eliminar(self):
         while True: '''
 
-
 class Categoria():
     def __init__(self):
         self.Categoria = {}
