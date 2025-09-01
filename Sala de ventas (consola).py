@@ -270,7 +270,7 @@ class Ventas():
             "total": total
         }
         self.GuardarVentas()
-        print(f"✅ Venta con el ID {IdVenta}, guardada correctamente.")
+        print(f"Venta con el ID {IdVenta}, guardada correctamente.")
 ventas = Ventas()
 '''--------------------------------------------------'''
 
