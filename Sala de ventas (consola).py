@@ -435,28 +435,33 @@ def menu():
                 input("Ingrese el Nit del cliente: "),
                 input("Ingrese el total: "),
             ),
+            "2" : lambda : detalleventa.AgregarDetalleVenta(
+                input("Ingrese el ID de detalle: "),
+                input("Ingrese el ID de venta: "),
+                input("Ingrese el ID del producto: "),
+                int(input("Ingrese la cantidad: "))
+            ),
 
-
-            "2": lambda: Producto.AgregarProductos(
+            "3": lambda: Producto.AgregarProductos(
                 input("ID Producto: "),
                 input("Nombre: "),
-                input("Precio costo: "),
+                input("Precio_costo: "),
                 input("Precio_venta: "),
                 input("stock: "),
             ),
-            "3": lambda: categoria.AgregarCategoria(
+            "4": lambda: categoria.AgregarCategoria(
                 input("ID Categoria: "),
                 input("Nombre: "),
             ),
-            "4": lambda : clientes.AgregarCliente(
+            "5": lambda : clientes.AgregarCliente(
                 input("Nit: "),
                 input("Nombre: "),
                 input("Direccion: "),
                 input("Telefono: "),
                 input("Correo: "),
             ),
-            "5": lambda : clientes.MostrarClientes(),
-            "6" : lambda : proveedor.AgregarProveedor(
+            "6": lambda : clientes.MostrarClientes(),
+            "7" : lambda : proveedor.AgregarProveedor(
                 input("Nit Proveedor: "),
                 input("Nombre: "),
                 input("Direccion: "),
@@ -464,7 +469,7 @@ def menu():
                 input("Correo: "),
                 input("Empresa: ")
             ),
-            "7": lambda : empleado.AgregarEmpleado(
+            "8": lambda : empleado.AgregarEmpleado(
                 input("Nit Empleado: "),
                 input("Nombre: "),
                 input("Direccion: "),
@@ -472,7 +477,7 @@ def menu():
                 input("Correo: "),
                 input("Puesto: "),
             ),
-            "8": lambda : exit()
+            "9": lambda : exit()
 
         }
         if opcion in opciones:
