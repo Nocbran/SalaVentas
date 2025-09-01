@@ -274,9 +274,6 @@ class Ventas():
 ventas = Ventas()
 '''--------------------------------------------------'''
 
-'''__________________________________________________'''
-'''AGREGAR IdVenta,IdProducto'''
-
 class DetalleVenta():
     def __init__(self):
         self.Detalleventas = {}
@@ -287,29 +284,55 @@ class DetalleVenta():
                 for linea in archivo:
                     linea = linea.strip()
                     if linea :
-                        IdDetalleVenta,cantidad,subtotal,stock = linea.split(":")
+                        IdDetalleVenta, IdVenta, IdProducto, cantidad, subtotal = linea.split(":")
                         self.Detalleventas[IdDetalleVenta] = {
-                            "cantidad": cantidad,
-                            "subtotal": subtotal,
-                            "stock": stock
+                            "IdVenta": IdVenta,
+                            "IdProducto": IdProducto,
+                            "cantidad": int(cantidad),
+                            "subtotal": float(subtotal)
                         }
-            print("Detalleventas.txt importados desde Detalleventas")
+                    print("Detalleventas.txt importados desde Detalleventas")
         except FileNotFoundError:
             print("No existe el archivo Detalleventas.txt. se creara uno nuevo.")
 
     def GuardarDetalleVenta(self):
-        with open("Detalleventas.txt","w",encoding="utf-8") as archivo:
-            for IdDetalleVenta,datos in self.Detalleventas.items():
-                archivo.write(f"{IdDetalleVenta}:{datos['cantidad']}:{datos['subtotal']}:{datos['stock']}\n")
+        with open("Detalleventas.txt", "w", encoding="utf-8") as archivo:
+            for IdDetalleVenta, datos in self.Detalleventas.items():
+                archivo.write(
+                    f"{IdDetalleVenta}:{datos['IdVenta']}:{datos['IdProducto']}:{datos['cantidad']}:{datos['subtotal']}\n")
 
-    def AgregarDetalleVenta(self, IdDetalleVenta, cantidad, subtotal, stock):
+    def AgregarDetalleVenta(self, IdDetalleVenta, IdVenta, IdProducto, cantidad):
+                # Verificar que la venta exista
+        if IdVenta not in ventas.ventas:
+            print(f"La venta {IdVenta} no existe.")
+            return
+                # Verificar que el producto exista
+        if IdProducto not in Producto.Productos:
+            print(f"El producto {IdProducto} no existe.")
+            return
+                # Verificar stock
+        stock_disponible = int(Producto.Productos[IdProducto]["stock"])
+        if cantidad > stock_disponible:
+            print(f"No hay suficiente stock. Disponible: {stock_disponible}")
+            return
+
+                # Calcular subtotal
+        precio_venta = float(Producto.Productos[IdProducto]["precio_venta"])
+        subtotal = cantidad * precio_venta
+
+                # Restar stock
+        Producto.Productos[IdProducto]["stock"] = str(stock_disponible - cantidad)
+        Producto.GuardarProductos()
+
+                # Guardar detalle
         self.Detalleventas[IdDetalleVenta] = {
+            "IdVenta": IdVenta,
+            "IdProducto": IdProducto,
             "cantidad": cantidad,
-            "subtotal": subtotal,
-            "stock": stock
-        }
+            "subtotal": subtotal
+            }
         self.GuardarDetalleVenta()
-        print("Detalle de venta agregado correctamente")
+        print(f"✅ Detalle de venta agregado correctamente (Producto {IdProducto}, Cantidad {cantidad})")
 detalleventa = DetalleVenta()
 '''_____________________________________________________________'''
 
