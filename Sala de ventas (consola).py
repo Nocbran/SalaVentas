@@ -408,6 +408,17 @@ class Compras():
         }
         self.GuardarCompras()
         print("Compras guardadas correctamente.")
+
+    def MostrarCompras(self):
+        if self.Compras:
+            print("\n****LISTA DE COMPRAS****")
+            for IdCompras,datos in self.Compras.items():
+                print(f"Id ventas: {IdCompras}")
+                for clave,valor in datos.items():
+                    print(f"{clave}:{valor}")
+        else:
+            print("No hay ventas registradas.")
+
 compras = Compras()
 '''*******************************************************'''
 
@@ -461,7 +472,8 @@ def menu():
         print(f"{'7. Agregar clientes'.ljust(25)} 8. Mostrar clientes")
         print(f"{'9. Agregar proveedor'.ljust(25)} 10. Mostrar proveedores")
         print(f"{'11. Agregar empleado'.ljust(25)} 12. Mostrar empleados")
-        print(f"13. Salir")
+        print(f"{'13. Registrar compras'.ljust(25)} 13. Mostrar registro de compras")
+        print(f"15. Salir")
 
         opcion = input("Escoja una opcion: ")
 
@@ -523,7 +535,13 @@ def menu():
             ),
             "12" : lambda : empleado.MostrarEmpleados(),
 
-            "13": lambda : exit()
+            "13" : lambda : compras.AgregarCompras(
+                input("Id de compra: "),
+                input("Fecha de vencimiento: "),
+                input("Total de productos: ")
+            ),
+            "14" : lambda : compras.MostrarCompras(),
+            "15": lambda : exit()
 
         }
         if opcion in opciones:
