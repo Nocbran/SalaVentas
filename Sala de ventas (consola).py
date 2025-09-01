@@ -341,29 +341,29 @@ class DetalleVenta():
                     f"{IdDetalleVenta}:{datos['IdVenta']}:{datos['IdProducto']}:{datos['cantidad']}:{datos['subtotal']}\n")
 
     def AgregarDetalleVenta(self, IdDetalleVenta, IdVenta, IdProducto, cantidad):
-                # Verificar que la venta exista
+
         if IdVenta not in ventas.ventas:
             print(f"La venta {IdVenta} no existe.")
             return
-                # Verificar que el producto exista
+
         if IdProducto not in Producto.Productos:
             print(f"El producto {IdProducto} no existe.")
             return
-                # Verificar stock
+
         stock_disponible = int(Producto.Productos[IdProducto]["stock"])
         if cantidad > stock_disponible:
             print(f"No hay suficiente stock. Disponible: {stock_disponible}")
             return
 
-                # Calcular subtotal
+
         precio_venta = float(Producto.Productos[IdProducto]["precio_venta"])
         subtotal = cantidad * precio_venta
 
-                # Restar stock
+
         Producto.Productos[IdProducto]["stock"] = str(stock_disponible - cantidad)
         Producto.GuardarProductos()
 
-                # Guardar detalle
+
         self.Detalleventas[IdDetalleVenta] = {
             "IdVenta": IdVenta,
             "IdProducto": IdProducto,
@@ -470,8 +470,8 @@ def menu():
             "1": lambda : ventas.AgregarVentas(
                 input("Igrese el Id de ventas: "),
                 input("Ingrese la fecha: "),
-                input("Ingrese el ID del empleado: "),
                 input("Ingrese el Nit del cliente: "),
+                input("Ingrese el ID del empleado: "),
                 input("Ingrese el total: "),
             ),
             "2": lambda : ventas.MostrarVentas(),
